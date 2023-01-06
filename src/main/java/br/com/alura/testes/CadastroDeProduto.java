@@ -2,10 +2,11 @@ package br.com.alura.testes;
 
 import java.math.BigDecimal;
 
+import br.com.alura.loja.dao.ProdutoDAO;
 import br.com.alura.loja.modelo.Produto;
+import br.com.alura.loja.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 
 public class CadastroDeProduto {
 
@@ -15,13 +16,13 @@ public class CadastroDeProduto {
 		produto.setNome("Smartphone Xiaomi");
 		produto.setDescricao("128GB");
 		produto.setPreco(new BigDecimal("2487"));
-		
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("loja");
-		EntityManager em = factory.createEntityManager();
-		
+				 
+		EntityManager em = JPAUtil.getEntityManager(); 
+		ProdutoDAO dao = new ProdutoDAO(em);
+				
 		em.getTransaction().begin();
-		em.persist(produto);
-		em.getTransaction();
+		dao.Cadastrar(produto);		
+		em.getTransaction().commit();
 		em.close();
 	}
 
